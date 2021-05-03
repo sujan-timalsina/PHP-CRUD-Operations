@@ -12,7 +12,8 @@
   </head>
   <body>
     <div class="display-4 text-info text-center">AJAX-----PHP-----JQUERY</div>
-    <form id="myform" class="col-md-4 mx-auto my-2">
+    <form id="myform" class="col-md-12 col-lg-6 mx-auto my-2">
+      <input type="text" id="uid" class="form-control" style="display:none;">
       <label for="firstname">Firstname:</label>
       <input type="text" class="form-control" name="firstname" id="firstname">
       <label for="lastname">Lastname:</label>

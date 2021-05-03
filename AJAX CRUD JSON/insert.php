@@ -9,13 +9,30 @@ include 'connection.php';
 
 $data=stripslashes(file_get_contents("php://input"));
 $mydata=json_decode($data,true);
+$id=$mydata['id'];
 $firstname=$mydata['fn'];
 $lastname=$mydata['ln'];
 $email=$mydata['email'];
 $mobile=$mydata['mobile'];
 
+//For insert only
+// if(!empty($firstname) && !empty($lastname) && !empty($email) && !empty($mobile)){
+// 	$sql="INSERT INTO tablecrud(firstname,lastname,email,mobile) VALUES('$firstname','$lastname','$email','$mobile')";
+// 	$res=mysqli_query($conn,$sql);
+
+// 	if ($res) {
+// 		echo "Saved Successfully";
+// 	}else{
+// 		echo "Save Failed";
+// 	}
+// }else{
+// 	echo "Fill All Fields";
+// }
+
+//For insert or update data
 if(!empty($firstname) && !empty($lastname) && !empty($email) && !empty($mobile)){
-	$sql="INSERT INTO tablecrud(firstname,lastname,email,mobile) VALUES('$firstname','$lastname','$email','$mobile')";
+	$sql="INSERT INTO tablecrud(id,firstname,lastname,email,mobile) VALUES('$id','$firstname','$lastname','$email','$mobile')
+	ON DUPLICATE KEY UPDATE firstname='$firstname',lastname='$lastname',email='$email',mobile='$mobile'";
 	$res=mysqli_query($conn,$sql);
 
 	if ($res) {

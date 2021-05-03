@@ -11,9 +11,9 @@ if(!empty($id)){
 	$sql="DELETE FROM tablecrud WHERE id = {$id}";
 	$res=mysqli_query($conn,$sql);
 	if($res){
-		echo "Deleted Successfully";
+		echo 1;
 	}else{
-		echo "Unable to Delete";
+		echo 0;
 	}
 }
 ?>

@@ -24,7 +24,8 @@ $(document).ready(function(){
 					output+="<tr><td>" + x[i].id + "</td><td>" + x[i].firstname 
 					+ "</td><td>" + x[i].lastname + "</td><td>" + x[i].email + 
 					"</td><td>" + x[i].mobile + 
-					"</td><td> <button class='btn btn-warning btn-edit'>Edit</button>"
+					"</td><td> <button class='btn btn-warning btn-edit' data-id="
+					+ x[i].id + ">Edit</button>"
 					+"<button class='btn btn-danger btn-delete' data-id="
 					+ x[i].id + ">Delete</button>"
 					+"</td></tr>";
@@ -40,6 +41,7 @@ $(document).ready(function(){
 	//Ajax Request for Insert Data
 	$("#btn-add").click(function (e) {
 		e.preventDefault();
+		let userid=$("#uid").val();
 		let fname=$("#firstname").val();
 		let lname=$("#lastname").val();
 		let em=$("#email").val();
@@ -49,7 +51,7 @@ $(document).ready(function(){
 		// console.log(em);
 		// console.log(mb);
 
-		mydata={fn:fname, ln:lname, email:em, mobile:mb}
+		mydata={id:userid, fn:fname, ln:lname, email:em, mobile:mb}
 		// console.log(mydata);
 
 		$.ajax({
@@ -58,7 +60,7 @@ $(document).ready(function(){
 			data:JSON.stringify(mydata),
 			success: function(data){
 				// console.log(data);
-				msg="<div>" + data + "</div>";
+				msg="<div class='alert alert-dark mt-3'>" + data + "</div>";
 				$("#msg").html(msg);
 				$("#myform")[0].reset();
 				showData();
@@ -73,17 +75,55 @@ $(document).ready(function(){
 		let id=$(this).attr("data-id");
 		// console.log(id);
 		mydata={sid:id};
+
+		mythis=this;
+
 		$.ajax({
 			url:"delete.php",
 			type:"POST",
 			data:JSON.stringify(mydata),
 			success:function(data){
-				console.log(data);
-				showData();
+				// console.log(data);
+				if (data==1){
+					msg="<div class='alert alert-dark mt-3'>" + "Deleted Successfully" + "</div>";
+					$("#msg").html(msg);
+					//showData();
+					//showData() run garda kaam ta garxa tara lastko
+					// euta matra record delete garda table bata hatdaina
+					// page refresh garexi matra hatxa
+					$(mythis).closest("tr").fadeOut();	
+				}
+				else if(data==0){
+					msg="<div class='alert alert-dark mt-3'>" + "Unable to Delete" + "</div>";
+					$("#msg").html(msg);
+				}
+				
 			}
 		});
 	});
 
+
+	//AJAX Request for Editing Data
+	$("#tbody").on("click",".btn-edit",function(){
+		console.log("Edit button Clicked");
+		let id=$(this).attr("data-id");
+		// console.log(id);
+		mydata={sid:id};
+		$.ajax({
+			url:'edit.php',
+			method:"POST",
+			data:JSON.stringify(mydata),
+			dataType:"json",
+			success:function(data){
+				// console.log(data);
+				$("#uid").val(data.id);
+				$("#firstname").val(data.firstname);
+				$("#lastname").val(data.lastname);
+				$("#email").val(data.email);
+				$("#mobile").val(data.mobile);
+			}
+		});
+	});
 
 });
 
