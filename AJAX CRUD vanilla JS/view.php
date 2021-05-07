@@ -16,15 +16,15 @@
       <div class="d-flex flex-wrap">
         <div class="col-lg-4 col-md-12">
           <p class="h2 text-white text-center bg-warning p-2">Add/Edit User:</p>
-          <form id="myform">
+          <form name="myForm" method="POST">
             <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" class="form-control">
+            <input type="text" name="firstname" class="form-control">
             <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" class="form-control">
+            <input type="text" name="lastname" class="form-control">
             <label for="email">Email:</label>
-            <input type="email" id="email" class="form-control">
+            <input type="email" name="email" class="form-control">
             <label for="mobile">Mobile:</label>
-            <input type="text" id="mobile" class="form-control">
+            <input type="text" name="mobile" class="form-control">
             <button type="submit" id="btn-save" class="btn btn-primary my-1">Save</button>
           </form>
           <div id="msg"></div>
