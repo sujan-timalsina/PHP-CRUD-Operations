@@ -16,7 +16,7 @@
       <div class="d-flex flex-wrap">
         <div class="col-lg-4 col-md-12">
           <p class="h2 text-white text-center bg-warning p-2">Add/Edit User:</p>
-          <form name="myForm" method="POST">
+          <form name="myForm" id="myForm" method="POST">
             <label for="firstname">First Name:</label>
             <input type="text" name="firstname" class="form-control">
             <label for="lastname">Last Name:</label>
@@ -27,7 +27,9 @@
             <input type="text" name="mobile" class="form-control">
             <button type="submit" id="btn-save" class="btn btn-primary my-1">Save</button>
           </form>
-          <div id="msg"></div>
+          <div>
+            <div id="msg" class="bg-dark text-white h4 text-center"></div>
+          </div>
         </div>
 
         <div class="col-lg-8 col-md-12 table-responsive">
@@ -54,5 +56,6 @@
 
     <script src="bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
     <script src="ajaxscript.js"></script>
+    
   </body>
 </html>
