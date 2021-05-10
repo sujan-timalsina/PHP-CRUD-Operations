@@ -1,94 +1,158 @@
 //AJAX Request for retrieving data
-let tbody=document.getElementById("tbody");
-function showdata(){
-	tbody.innerHTML="";
-	const xhr=new XMLHttpRequest();
-	xhr.open("POST","retrieve.php",true);
+let tbody = document.getElementById("tbody");
+function showdata() {
+  tbody.innerHTML = "";
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "retrieve.php", true);
 
-	//parse data into JS Object from JSON
-	xhr.responseType="json";
+  //parse data into JS Object from JSON
+  xhr.responseType = "json";
 
-	xhr.onload=function(){
-		if(this.status==200){
-			// console.log(this.response);
-			if(this.response){
-				x=this.response;
-				for(i=0; i<x.length; i++){
-					tbody.innerHTML+="<tr><td>"+x[i].id+"</td><td>"+x[i].firstname+"</td><td>"
-					+x[i].lastname+"</td><td>"+x[i].email+"</td><td>"
-					+x[i].mobile+"</td><td>"+
-					"<button class='btn btn-warning btn-edit' data-sid="+x[i].id+">Edit</button>"+
-					"<button class='btn btn-danger btn-edit' data-sid="+x[i].id+">Delete</button>";
-				}
-			}else{
-				x="";
-			}
-		}else{
-			console.log("Error Showing Data");
-		}
-	}
-	xhr.send();
-
+  xhr.onload = function () {
+    if (this.status == 200) {
+      // console.log(this.response);
+      if (this.response) {
+        x = this.response;
+        for (i = 0; i < x.length; i++) {
+          tbody.innerHTML +=
+            "<tr><td>" +
+            x[i].id +
+            "</td><td>" +
+            x[i].firstname +
+            "</td><td>" +
+            x[i].lastname +
+            "</td><td>" +
+            x[i].email +
+            "</td><td>" +
+            x[i].mobile +
+            "</td><td>" +
+            "<button class='btn btn-warning btn-edit' data-sid=" +
+            x[i].id +
+            ">Edit</button>" +
+            "<button class='btn btn-danger btn-del' data-sid=" +
+            x[i].id +
+            ">Delete</button>";
+        }
+      } else {
+        x = "";
+      }
+    } else {
+      console.log("Error Showing Data");
+    }
+    user_delete();
+  };
+  xhr.send();
 }
 showdata();
 
 //Ajax request for Insert Data
 
-document.getElementById("btn-save").addEventListener("click",add_student);
+document.getElementById("btn-save").addEventListener("click", add_student);
 
-function add_student(e){
-	e.preventDefault();
-	console.log("Save Button Clicked");
-	var firstname = document.forms["myForm"]["firstname"].value;
-	var lastname = document.forms["myForm"]["lastname"].value;
-	var email = document.forms["myForm"]["email"].value;
-	var mobile = document.forms["myForm"]["mobile"].value;
-	
-	// console.log(fn);
-	// console.log(ln);
-	// console.log(em);
-	// console.log(mob);
+function add_student(e) {
+  e.preventDefault();
+  console.log("Save Button Clicked");
+  var firstname = document.forms["myForm"]["firstname"].value;
+  var lastname = document.forms["myForm"]["lastname"].value;
+  var email = document.forms["myForm"]["email"].value;
+  var mobile = document.forms["myForm"]["mobile"].value;
 
-	//Creating XHR Object
-	const xhr=new XMLHttpRequest();
+  // console.log(fn);
+  // console.log(ln);
+  // console.log(em);
+  // console.log(mob);
 
-	//initialize
-	xhr.open("POST","insert.php",true);
-	//true means asynchronous
+  //Creating XHR Object
+  const xhr = new XMLHttpRequest();
 
-	//Set Request Header
-	xhr.setRequestHeader("Content-Type", "application/json");
+  //initialize
+  xhr.open("POST", "insert.php", true);
+  //true means asynchronous
 
-	//Handle Response
-	xhr.onload = function(){
-		if(this.readyState==4 && this.status==200){
-			//Response handling code
-			// console.log(this.responseText);
-			document.getElementById("msg").innerHTML=this.responseText;
-			document.getElementById("myForm").reset();
-			showdata();
-		}else{
-			console.log("Problem Occurred");
-		}
-	}
-	// xhr.onreadystatechange = function(){
-	// 	if (this.readyState == 4 && this.status == 200) {
- //     		console.log(this.responseText);
- //    	}
-	// }
+  //Set Request Header
+  xhr.setRequestHeader("Content-Type", "application/json");
 
-	//JS Object
-	const mydata={firstname:firstname,lastname:lastname,email:email,mobile:mobile};
-	console.log(mydata);
+  //Handle Response
+  xhr.onload = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      //Response handling code
+      // console.log(this.responseText);
+      document.getElementById("msg").innerHTML = this.responseText;
+      document.getElementById("myForm").reset();
+      showdata();
+    } else {
+      console.log("Problem Occurred");
+    }
+  };
+  // xhr.onreadystatechange = function(){
+  // 	if (this.readyState == 4 && this.status == 200) {
+  //     		console.log(this.responseText);
+  //    	}
+  // }
 
-	//Now we have to send JSON string not JS object
+  //JS Object
+  const mydata = {
+    firstname: firstname,
+    lastname: lastname,
+    email: email,
+    mobile: mobile,
+  };
+  // console.log(mydata);
 
-	const data=JSON.stringify(mydata);
-	//Above method will convert from JS object to JSON string
+  //Now we have to send JSON string not JS object
 
-	console.log(data);
+  const data = JSON.stringify(mydata);
+  //Above method will convert from JS object to JSON string
 
-	//Send Request with Data
-	xhr.send(data);
-	// return false;
+  // console.log(data);
+
+  //Send Request with Data
+  xhr.send(data);
+  // return false;
+}
+
+
+//AJAX Call for Delete Records
+function user_delete() {
+  var x = document.getElementsByClassName("btn-del");
+  // console.log(x);
+  // console.log(x.length);
+
+  for (let i = 0; i < x.length; i++) {
+    // console.log(x[i].getAttribute("data-sid"));
+    x[i].addEventListener("click", function () {
+      id = x[i].getAttribute("data-sid");
+
+      // console.log("Delete button clicked", id);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "delete.php", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          //Response handling code
+          // console.log(this.response);
+          document.getElementById("msg").innerHTML = this.responseText;
+          showdata();
+        } else {
+          console.log("Problem Occurred");
+        }
+      }
+
+      //JS Object
+      const mydata = { sid: id };
+      // console.log(mydata);
+
+      //Now we have to send JSON string not JS object
+
+      const data = JSON.stringify(mydata);
+      //Above method will convert from JS object to JSON string
+
+      // console.log(data);
+
+      //Send Request with Data
+      xhr.send(data);
+    });
+  }
 }
