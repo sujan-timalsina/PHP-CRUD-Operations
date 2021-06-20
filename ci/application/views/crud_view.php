@@ -25,6 +25,7 @@
                     <th>Name</th>
                     <th>Age</th>
                     <th>Phone</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -34,6 +35,9 @@
                         <td><?php echo $users->name; ?></td>
                         <td><?php echo $users->age; ?></td>
                         <td><?php echo $users->phone; ?></td>
+                        <td>
+                            <img src="<?php echo $users->img_path; ?>" alt="img" height="100px" width="100px">
+                        </td>
                         <td>
                             <a class="btn btn-info" href="<?php echo base_url(); ?>crud/editUser/<?php echo $users->id; ?>">Edit</a>
                             <a class="btn btn-danger" href="<?php echo base_url(); ?>crud/deleteUser/<?php echo $users->id; ?>">Delete</a>
@@ -48,7 +52,7 @@
     <div class="modal fade" id="iModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="<?php echo base_url(); ?>crud/addUser" method="POST">
+                <form action="<?php echo base_url(); ?>crud/addUser" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -65,6 +69,15 @@
                         <div class="form-group">
                             <label for="phone">Phone</label>
                             <input type="number" class="form-control" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Upload</label>
+                            <?php echo form_upload(['name' => 'userfile']); ?>
+                            <?php
+                            if (isset($upload_error)) {
+                                echo $upload_error;
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="modal-footer">

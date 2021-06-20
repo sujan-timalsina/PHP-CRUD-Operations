@@ -15,6 +15,12 @@ class Crud extends CI_Controller
         $this->form_validation->set_rules('age', 'User Age', 'trim|required');
         $this->form_validation->set_rules('phone', 'User Phone Number', 'trim|required');
 
+        // For image 
+        $config['upload_path'] = './upload/';
+        $config['allowed_types'] = 'gif|jpg|png';
+
+        $this->load->library('upload', $config);
+
         if ($this->form_validation->run() == false) {
             $data_error = [
 
@@ -22,11 +28,20 @@ class Crud extends CI_Controller
             ];
 
             $this->session->set_flashdata($data_error);
-        } else {
+        } else if ($this->upload->do_upload()) {
+
+            $post = $this->input->post();
+            $data = $this->upload->data();
+
+            $image_path = base_url("upload/" . $data['raw_name'] . $data['file_ext']);
+            $post['image_path'] = $image_path;
+
+
             $result = $this->crud_model->insertUser([
                 'name' => $this->input->post('name'),
                 'age' => $this->input->post('age'),
-                'phone' => $this->input->post('phone')
+                'phone' => $this->input->post('phone'),
+                'img_path' => $image_path
 
             ]);
 

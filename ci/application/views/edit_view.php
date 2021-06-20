@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>crud/update/<?php echo $singleUser->id; ?>" method="POST">
+        <form action="<?php echo base_url(); ?>crud/update/<?php echo $singleUser->id; ?>" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $singleUser->name; ?>">
