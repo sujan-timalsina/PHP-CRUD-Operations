@@ -58,19 +58,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="form-group my-3">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-3">
                             <label for="age">Age</label>
                             <input type="number" class="form-control" id="age" name="age">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-3">
                             <label for="phone">Phone</label>
                             <input type="number" class="form-control" id="phone" name="phone">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-3">
                             <label for="phone">Upload</label>
                             <?php echo form_upload(['name' => 'userfile']); ?>
                             <?php
