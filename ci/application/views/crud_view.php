@@ -12,6 +12,7 @@
 <body>
     <h1 class="text-center alert alert-dark">CRUD CI View</h1>
     <div class="container my-3 d-flex justify-content-end">
+        <div id="success"></div>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#iModal">
             Add User
@@ -72,7 +73,9 @@
                         </div>
                         <div class="form-group my-3">
                             <label for="phone">Upload</label>
-                            <?php echo form_upload(['name' => 'userfile']); ?>
+                            <?php //echo form_upload(['name' => 'userfile']); 
+                            ?>
+                            <input type="file" class="form-control" id="userfile" name="userfile">
                             <?php
                             if (isset($upload_error)) {
                                 echo $upload_error;
@@ -82,7 +85,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-success" name="insert" value="Add">
+                        <input type="submit" class="btn btn-success" name="insert" value="Add" id="insert">
                     </div>
                 </form>
             </div>
@@ -114,7 +117,47 @@
         </div>
     <?php endif; ?>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#insert').on('submit', function() {
+                var name = $('#name').val();
+                var age = $('#age').val();
+                var phone = $('#phone').val();
+                var userfile = $('#userfile').val();
+                if (name != "" && age != "" && phone != "" && userfile != "") {
+                    // $("#butsave").attr("disabled", "disabled");
+                    $.ajax({
+                        url: "<?php echo base_url("crud/addUser"); ?>",
+                        type: "POST",
+                        data: {
+                            type: 1,
+                            name: name,
+                            age: age,
+                            phone: phone,
+                            userfile: userfile
+                        },
+                        cache: false,
+                        success: function(dataResult) {
+                            var dataResult = JSON.parse(dataResult);
+                            if (dataResult.statusCode == 200) {
+                                // $("#butsave").removeAttr("disabled");
+                                // $('#fupForm').find('input:text').val('');
+                                // $("#success").show();
+                                $('#success').html('Data added successfully !');
+                            } else if (dataResult.statusCode == 201) {
+                                alert("Error occured !");
+                            }
+
+                        }
+                    });
+                } else {
+                    alert('Please fill all the field !');
+                }
+            });
+        });
+    </script>
 
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
 </body>
