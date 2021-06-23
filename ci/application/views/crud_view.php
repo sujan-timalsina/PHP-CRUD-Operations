@@ -14,7 +14,7 @@
     <div class="container my-3 d-flex justify-content-end">
         <div id="success"></div>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#iModal">
+        <button type="button" class="btn btn-primary add_user" data-bs-toggle="modal" data-bs-target="#iModal">
             Add User
         </button>
 
@@ -53,7 +53,7 @@
     <div class="modal fade" id="iModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="<?php echo base_url(); ?>crud/addUser" method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-success" name="insert" value="Add" id="insert">
+                        <input type="submit" class="btn btn-success" id="insert" value="Add">
                     </div>
                 </form>
             </div>
@@ -121,18 +121,20 @@
 
     <script>
         $(document).ready(function() {
-            $('#insert').on('submit', function() {
+            $('#insert').submit(function(event) {
+                event.preventDefault();
                 var name = $('#name').val();
                 var age = $('#age').val();
                 var phone = $('#phone').val();
                 var userfile = $('#userfile').val();
+                $('#success').html('Sent');
+
                 if (name != "" && age != "" && phone != "" && userfile != "") {
-                    // $("#butsave").attr("disabled", "disabled");
+                    // Preventdefault code here..
                     $.ajax({
-                        url: "<?php echo base_url("crud/addUser"); ?>",
+                        url: "<?php echo base_url(); ?>crud/addUser",
                         type: "POST",
                         data: {
-                            type: 1,
                             name: name,
                             age: age,
                             phone: phone,
@@ -142,10 +144,7 @@
                         success: function(dataResult) {
                             var dataResult = JSON.parse(dataResult);
                             if (dataResult.statusCode == 200) {
-                                // $("#butsave").removeAttr("disabled");
-                                // $('#fupForm').find('input:text').val('');
-                                // $("#success").show();
-                                $('#success').html('Data added successfully !');
+                                // $('#success').html('Data added successfully !');
                             } else if (dataResult.statusCode == 201) {
                                 alert("Error occured !");
                             }
@@ -153,7 +152,7 @@
                         }
                     });
                 } else {
-                    alert('Please fill all the field !');
+                    // $('#success').html('Please fill all fields');
                 }
             });
         });

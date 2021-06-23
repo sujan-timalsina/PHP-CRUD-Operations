@@ -2,6 +2,13 @@
 
 class Crud extends CI_Controller
 {
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->model('crud_model');
+    }
+
     public function index()
     {
         // $this->load->model('crud_model');
