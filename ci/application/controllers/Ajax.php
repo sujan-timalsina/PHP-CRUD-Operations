@@ -23,4 +23,16 @@ class Ajax extends CI_Controller
         $data = $this->ajax_model->select_user();
         echo json_encode($data);
     }
+
+    function update()
+    {
+        $data = $this->ajax_model->update_user();
+        echo json_encode($data);
+    }
+
+    function delete()
+    {
+        $data = $this->ajax_model->delete_user();
+        echo json_encode($data);
+    }
 }
